@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+{# burdaki variabler controllerdan dönüyor#}
+    {# abs  mutlak değer yapar#}
+    
+    {{ negativeVar|abs }}
+    
+    <hr>
+    {{ sentence|capitalize }}
+
+    <hr>
+    {{ bugun|date('M D Y') }}
+
+    <hr>
+    {# şehiler arrayı ilk eleman#}
+    {{ sehirler|first }}
+
+    <hr>
+    {# array elemanlarını aralarına virgil ekleyerek yazdırır#}
+    {{ sehirler|join(',') }}
+
+    <hr>
+    {# array keylerini aralarına virgül ekleyerek yazdırır#}
+    {{ sehirler|keys|join(',') }}
+
+    <hr>
+     {# şehirler arrayı son eleman#}
+    {{ sehirler|last }}
+
+    <hr>
+    {# şehirler arrayı eleman sayısı#}
+    {{ sehirler|length }}
+
+    <hr>
+    {# sentence değişkeni tüm elemanları küçültür#}
+    {{ sentence|lower }}
+
+    <hr>
+    {#  şehirler arrayına Urfayıda ekledik ve arasına virgül attık #}
+    {{ sehirler|merge(['Urfa'])|join(',') }}
+
+    <hr>
+    {# html etiklerini uygulayarak yazırırız #}
+    {{ rawData|raw }}
+
+    <hr>
+    {# sehirler arrayını ters çevirerek arasına tire tire atar #}
+    {{ sehirler|reverse|join('--') }}
+
+    <hr>
+    {# sehirler arrayını alfabetik sıralyarak arasına tire tire atar #}
+    {{ sehirler|sort|join('--') }}
+
+    <hr>
+    {# başındaki sonundaki boşlukları siler#}
+    {{ sentence|trim }}
+
+    <hr>
+     {# bütün karakterleri büyük olarak yazdırır#}
+    {{ sentence|upper }}
+
+    <hr>
+    {# url encode yapar#}
+    {{ 'http://behram.org/?name=behram'|url_encode }}
+
+    <hr>
+     {# json encode  yapar#}
+    {{ sehirler|json_encode }}
+
+
+
+{% endblock %}
