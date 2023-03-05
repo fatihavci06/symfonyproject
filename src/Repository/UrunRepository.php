@@ -7,6 +7,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
+use PhpParser\Node\Stmt\Return_;
 
 /**
  * @extends ServiceEntityRepository<Urun>
@@ -22,7 +23,16 @@ class UrunRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Urun::class);
     }
+    public function findAllGreaterThan(int $price)
+    {
+        $qb=$this->createQueryBuilder('u')
+            ->andWhere('u.fiyat > :price')
+            ->setParameter('price',$price)
+            ->orderBy('u.fiyat','ASC')
+            ->getQuery();
 
+        return $qb->execute();
+    }
     /**
      * @throws ORMException
      * @throws OptimisticLockException

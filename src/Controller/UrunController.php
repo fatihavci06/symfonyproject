@@ -129,4 +129,13 @@ class UrunController extends AbstractController
             'data'=>$data
         ]);
     }
+    /**
+     * @Route("/urun/listing", name="listing" )
+     */
+    public function listing(UrunRepository $urunRepository): Response
+    {
+        $data=$urunRepository->findAllGreaterThan(500);
+        return $this->render('urun/index.html.twig',['data'=>$data]);
+    }
+
 }
