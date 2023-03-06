@@ -21,8 +21,8 @@ class UrunController extends AbstractController
     {
       ///listeleme
        $data=$urunRepository->findAll();
-       
-        
+
+        return $this->json($data);
         return $this->render('urun/index.html.twig', [
             'controller_name' => 'UrunController',
             'sehirler'=>['Ankara','İstanbul'],
@@ -72,7 +72,7 @@ class UrunController extends AbstractController
         ]);
     }
     /**
-     * @Route("/urun/update/{id}", name="urun_show")
+     * @Route("/urun/update/{id}", name="urun_update")
      */
     public function update(UrunRepository $urunRepository,$id,Request $request): Response
     {
@@ -93,7 +93,7 @@ class UrunController extends AbstractController
         ]);
     }
     /**
-     * @Route("/urun/delete/{id}", name="urun_show")
+     * @Route("/urun/delete/{id}", name="urun_delete")
      */
     public function delete(UrunRepository $urunRepository,$id,Request $request): Response
     {
