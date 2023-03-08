@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Kategori;
 use App\Entity\Urun;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
@@ -33,8 +34,16 @@ class UrunRepository extends ServiceEntityRepository
 
         return $qb->execute();
     }
+    public function findByCategory(Kategori $kategori)
+    {
+        return $this->createQueryBuilder('u') //urunun kısaltması
+            ->andWhere('u.kategori = :kategori')//entitydeki kategori relationuna baktık.
+            ->setParameter('kategori', $kategori)
+            ->getQuery()
+            ->getResult();
+    }
     /**
-     * @throws ORMException
+     * @throws ORMException 
      * @throws OptimisticLockException
      */
     public function add(Urun $entity, bool $flush = true): void

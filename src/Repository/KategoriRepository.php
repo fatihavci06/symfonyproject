@@ -46,6 +46,7 @@ class KategoriRepository extends ServiceEntityRepository
             $this->_em->flush();
         }
     }
+    
 
     // /**
     //  * @return Kategori[] Returns an array of Kategori objects

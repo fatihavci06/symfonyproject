@@ -28,7 +28,7 @@ class Kategori
     /**
      * @ORM\OneToMany(targetEntity=Urun::class, mappedBy="kategori", orphanRemoval=true)
      */
-    private $urunler;
+    public $urunler;
 
     public function __construct()
     {

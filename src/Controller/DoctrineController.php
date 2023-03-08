@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Kategori;
 use App\Entity\Urun;
 use App\Repository\KategoriRepository;
+use App\Repository\UrunRepository;
 use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -59,10 +60,29 @@ class DoctrineController extends AbstractController
      /**
      * @Route("/one-to-many-veri-inceleme/{id}")
      */
-    public function oneToManyVeriInceleme($id,KategoriRepository $kategoriRepository)
+    public function oneToManyVeriInceleme(Kategori $kategori)
     {
-        $kategori = $kategoriRepository->find(2);
+        $urunler = $kategori->getUrunler();
+        
        
+        foreach ($urunler as $urun){
+            echo $urun->getIsim().'<hr>';
+        }
+        return new Response('');
+    }  
+    /**
+     * @Route("/relation-query-builder-inceleme/{id}")
+     */
+    public function relationQueryBuilder(UrunRepository $urunRepository,  Kategori $kategori)
+    {
+        
+
+        $urunler = $urunRepository->findByCategory($kategori);
+
+        foreach ($urunler as $urun){
+            echo $urun->getIsim().'<hr>';
+        }
+        return new Response('');
     }
 
     /**
