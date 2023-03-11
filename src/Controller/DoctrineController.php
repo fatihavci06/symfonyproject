@@ -2,18 +2,98 @@
 
 namespace App\Controller;
 
+use App\Entity\Grup;
 use App\Entity\Kategori;
 use App\Entity\Urun;
+use App\Entity\User;
 use App\Repository\KategoriRepository;
 use App\Repository\UrunRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class DoctrineController extends AbstractController
 {
+
+    /**
+     * @Route("/reqtest")
+     */
+    public function reqtest(Request $request):string
+    {
+        $data=$request->request->all();
+        
+        return new Response($data['name']) ;
+        
+        return new jsonResponse($data);
+    }
+
+     /**
+     * @Route("/kullanicigrup")
+     */
+    public function kullanicigrup(UserRepository $userRepository, SerializerInterface $serializer)
+    {
+
+        $user=$userRepository->find(1);
+        $userlar=$user->getGroups();
+        $jsonContent = $serializer->serialize($userlar, 'json');
+
+        echo $jsonContent;
+        die;
+
+        return $this->json($json);
+        foreach ($userlar as $u){
+            echo $u->getIsim().'<hr>';
+        }
+        return new Response('');
+    }
+
+    /**
+     * @Route("/many-to-many-veri-kaydetme")
+     */
+    public function manyToManyVeriKaydetme()
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $user1 = new User();
+        $user1->setIsim('Behram');
+        $user1->setUsername('behramcelen');
+
+        $user2 = new User();
+        $user2->setIsim('Selim');
+        $user2->setUsername('slmyldz');
+
+        $user3 = new User();
+        $user3->setIsim('Harun');
+        $user3->setUsername('harunglc');
+
+        $grup1 = new Grup();
+        $grup1->setIsim('Admin');
+
+        $grup2 = new Grup();
+        $grup2->setIsim('Editor');
+
+        $grup1->addUser($user1);
+        $grup1->addUser($user2);
+
+        $grup2->addUser($user2);
+        $grup2->addUser($user3);
+
+        $em->persist($user1);
+        $em->persist($user2);
+        $em->persist($user3);
+        $em->persist($grup1);
+        $em->persist($grup2);
+
+        $em->flush();
+
+
+        return new Response('');
+    }
     /**
      * @Route("/many-to-one-veri-kaydetme")
      */
@@ -113,14 +193,16 @@ class DoctrineController extends AbstractController
             ->getConnection();
         
 
-        $sql = 'SELECT isim FROM urun LIMIT 5';
+        $sql = 'SELECT * FROM user u inner join user_grup ug on u.id=ug.user_id inner join grup g on ug.grup_id=g.id where u.username="slmyldz"   LIMIT 5';
 
         $statement = $conn->prepare($sql);
 
         $result = $statement->execute();
 
+        $data=$result->fetchAll();
         
-
+        return $this->json($data);
+        
         dd($result->fetchAll());
         exit();
        
@@ -130,5 +212,16 @@ class DoctrineController extends AbstractController
         return $this->render('doctrine/index.html.twig', [
             'controller_name' => 'DoctrineController',
         ]);
+    }
+    /**
+     * @Route("/repo-sql", name="app_repo-sql")
+     */
+    public function reposql(UserRepository $userRepository): Response
+    {
+
+        $data=$userRepository->reposql();
+
+        return $this->json($data);
+        
     }
 }

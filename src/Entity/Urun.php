@@ -52,6 +52,16 @@ class Urun
      */
     private $kategori;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $durum;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $renk;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -136,6 +146,30 @@ class Urun
     public function setKategori(?Kategori $kategori): self
     {
         $this->kategori = $kategori;
+
+        return $this;
+    }
+
+    public function getDurum(): ?bool
+    {
+        return $this->durum;
+    }
+
+    public function setDurum(bool $durum): self
+    {
+        $this->durum = $durum;
+
+        return $this;
+    }
+
+    public function getRenk(): ?string
+    {
+        return $this->renk;
+    }
+
+    public function setRenk(string $renk): self
+    {
+        $this->renk = $renk;
 
         return $this;
     }

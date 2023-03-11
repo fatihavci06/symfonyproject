@@ -26,7 +26,7 @@ class Kategori
     private $isim;
 
     /**
-     * @ORM\OneToMany(targetEntity=Urun::class, mappedBy="kategori", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Urun::class, mappedBy="kategori", orphanRemoval=true,cascade={"persist", "remove"})
      */
     public $urunler;
 
